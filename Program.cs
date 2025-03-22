@@ -27,12 +27,17 @@ public class SayaTubeVideo
             throw new ArgumentException("Jumlah penambahan playCount tidak valid. Harus antara 1-10.000.000.");
         }
 
-        if (this.playCount + count < 0)
+        try
+        {
+            checked
+            {
+                this.playCount += count;
+            }
+        }
+        catch (OverflowException)
         {
             throw new OverflowException("PlayCount melebihi batas maksimum.");
         }
-
-        this.playCount += count;
     }
 
     public void PrintVideoDetails()
@@ -53,6 +58,19 @@ public class SayaTubeVideo
             video.IncreasePlayCount(500);
 
             video.PrintVideoDetails();
+
+            for (int i = 0; i < 1000; i++)
+            {
+                try
+                {
+                    video.IncreasePlayCount(10000000);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("An error occurred: " + ex.Message);
+                    break;
+                }
+            }
         }
         catch (Exception ex)
         {
@@ -60,3 +78,4 @@ public class SayaTubeVideo
         }
     }
 }
+
